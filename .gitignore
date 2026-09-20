@@ -1,0 +1,17 @@
+# Local configuration, libraries, and generated output
+.skilltree/
+library/local/
+skill-trees.local.json
+target/
+*.snap.new
+
+# Local configuration and notes
+.codex/
+*.local.md
+
+# Environment and tool state
+.env
+.env.*
+!.env.example
+.DS_Store
+Thumbs.db

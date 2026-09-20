@@ -1,0 +1,30 @@
+---
+source: src/behavior_tests.rs
+expression: "screen(&editor, 104)"
+---
+ Skill trees ───────────────────────────────────────────────────────────────────────────────────────────
+New local skill
+
+Name
+│
+
+
+Description
+
+
+
+Instructions
+
+
+
+
+
+
+
+
+
+
+
+
+
+Tab fields · Ctrl+S save · Ctrl+U clear field · Esc cancel

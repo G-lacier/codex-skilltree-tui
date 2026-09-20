@@ -1,0 +1,76 @@
+{
+  "version": 1,
+  "default_budget": 6000,
+  "sources": [
+    {"id": "bundled", "path": "library/bundled"}
+  ],
+  "classes": [
+    {
+      "id": "development",
+      "name": "Software Development",
+      "description": "Understand and change application code.",
+      "trees": [
+        {"id": "engineering", "name": "Codebase analysis", "description": "Map entry points, modules, and data flow."}
+      ]
+    },
+    {
+      "id": "debugging",
+      "name": "Debugging",
+      "description": "Investigate software failures and verify corrections.",
+      "trees": [
+        {"id": "debugging", "name": "Bug diagnosis", "description": "Reproduce failures and identify their causes."}
+      ]
+    },
+    {
+      "id": "data",
+      "name": "Data Analysis",
+      "description": "Inspect datasets before computing results.",
+      "trees": [
+        {"id": "inspection", "name": "Dataset inspection", "description": "Check structure, types, missing values, and duplicates."}
+      ]
+    },
+    {
+      "id": "documentation",
+      "name": "Documentation",
+      "description": "Document technical findings and decisions.",
+      "trees": [
+        {"id": "technical", "name": "Technical writing", "description": "Summarize evidence, options, and validation."}
+      ]
+    },
+    {
+      "id": "unassigned",
+      "name": "Unassigned",
+      "description": "Skills without a matching classification rule.",
+      "trees": [
+        {"id": "general", "name": "Unclassified skills", "description": "Browse skills awaiting classification."}
+      ]
+    }
+  ],
+  "rules": [
+    {
+      "names": ["project-map"],
+      "class": "development",
+      "tree": "engineering",
+      "tags": ["repository", "architecture", "codebase", "project", "map"]
+    },
+    {
+      "names": ["trace-bug"],
+      "class": "debugging",
+      "tree": "debugging",
+      "tags": ["debug", "bug", "failure", "regression", "trace"],
+      "requires": ["bundled/project-map"]
+    },
+    {
+      "names": ["csv-profile"],
+      "class": "data",
+      "tree": "inspection",
+      "tags": ["csv", "tsv", "data", "columns", "missing", "profile", "dataset"]
+    },
+    {
+      "names": ["technical-brief"],
+      "class": "documentation",
+      "tree": "technical",
+      "tags": ["documentation", "brief", "write", "report", "findings", "decision"]
+    }
+  ]
+}

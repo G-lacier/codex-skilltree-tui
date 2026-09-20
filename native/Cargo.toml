@@ -1,0 +1,22 @@
+[package]
+name = "codex-skilltree"
+version = "0.1.0"
+edition = "2024"
+license = "MIT"
+description = "Native skill tree editor for the Codex terminal interface"
+
+[lib]
+path = "src/mod.rs"
+
+[dependencies]
+crossterm = "0.29"
+ratatui = { version = "0.30.2", default-features = false, features = ["crossterm"] }
+regex-lite = "0.1"
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+textwrap = "0.16"
+
+[dev-dependencies]
+insta = "1"
+pretty_assertions = "1"
+tempfile = "3"

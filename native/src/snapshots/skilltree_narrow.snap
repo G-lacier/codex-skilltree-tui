@@ -1,0 +1,30 @@
+---
+source: src/behavior_tests.rs
+expression: "screen(&editor, 58)"
+---
+ Skill trees ─────────────────────────────────────────────
+debug a bug
+1 selected · 2 with prerequisites · ~297/6000 tokens   t t
+┌Skills──────────────────────────────────────────────────┐
+│[+] trace-bug                                           │
+│                                                        │
+│                                                        │
+│                                                        │
+│                                                        │
+│                                                        │
+│                                                        │
+│                                                        │
+│                                                        │
+│                                                        │
+│                                                        │
+│                                                        │
+│                                                        │
+└────────────────────────────────────────────────────────┘
+Debugging and Inspection / Bug diagnosis
+bundled/trace-bug · Investigate bugs and failures.
+Tags: debug, bug | Requires: bundled/project-map
+1 suggested skills selected. Space changes the selection;
+Ctrl+L loads it.
+
+Tab pane · ↑↓ browse · Space select · Ctrl+L load
+n new · e edit · i body · a assign · / search · Esc close

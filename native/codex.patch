@@ -1,0 +1,133 @@
+diff --git a/codex-rs/tui/src/app/event_dispatch.rs b/codex-rs/tui/src/app/event_dispatch.rs
+index d2ea7c5..d04f7f3 100644
+--- a/codex-rs/tui/src/app/event_dispatch.rs
++++ b/codex-rs/tui/src/app/event_dispatch.rs
+@@ -2762,6 +2762,9 @@ impl App {
+                 self.chat_widget
+                     .submit_user_message_with_mode(text, collaboration_mode);
+             }
++            AppEvent::SkillTreeApply { prompt } => {
++                self.chat_widget.insert_str(&prompt);
++            }
+             AppEvent::ManageSkillsClosed => {
+                 self.chat_widget.handle_manage_skills_closed();
+             }
+diff --git a/codex-rs/tui/src/app_event.rs b/codex-rs/tui/src/app_event.rs
+index 1592aef..76e3935 100644
+--- a/codex-rs/tui/src/app_event.rs
++++ b/codex-rs/tui/src/app_event.rs
+@@ -1171,6 +1171,9 @@ pub(crate) enum AppEvent {
+     OpenApprovalsPopup,
+ 
+     /// Open the skills list popup.
++    SkillTreeApply {
++        prompt: String,
++    },
+     OpenSkillsList,
+ 
+     /// Open the skills enable/disable picker.
+diff --git a/codex-rs/tui/src/chatwidget.rs b/codex-rs/tui/src/chatwidget.rs
+index 40eadfa..c492f1d 100644
+--- a/codex-rs/tui/src/chatwidget.rs
++++ b/codex-rs/tui/src/chatwidget.rs
+@@ -373,6 +373,7 @@ mod hook_lifecycle;
+ mod hooks;
+ mod interaction;
+ mod skills;
++mod skilltree;
+ mod slash_dispatch;
+ use self::skills::collect_tool_mentions;
+ use self::skills::find_app_mentions;
+diff --git a/codex-rs/tui/src/chatwidget/slash_dispatch.rs b/codex-rs/tui/src/chatwidget/slash_dispatch.rs
+index 7f2028f..ea2876a 100644
+--- a/codex-rs/tui/src/chatwidget/slash_dispatch.rs
++++ b/codex-rs/tui/src/chatwidget/slash_dispatch.rs
+@@ -449,6 +449,7 @@ impl ChatWidget {
+             SlashCommand::Mention => {
+                 self.insert_str("@");
+             }
++            SlashCommand::Skilltree => self.open_skilltree(String::new()),
+             SlashCommand::Skills => {
+                 self.open_skills_menu();
+             }
+@@ -710,6 +711,7 @@ impl ChatWidget {
+         } = prepared;
+         let trimmed = args.trim();
+         match cmd {
++            SlashCommand::Skilltree => self.open_skilltree(args),
+             SlashCommand::Export if trimmed.is_empty() => self.show_transcript_export_popup(),
+             SlashCommand::Export => {
+                 self.set_queue_autosend_suppressed(/*suppressed*/ true);
+@@ -1188,6 +1190,7 @@ impl ChatWidget {
+             | SlashCommand::Logout
+             | SlashCommand::Mention
+             | SlashCommand::Skills
++            | SlashCommand::Skilltree
+             | SlashCommand::Import
+             | SlashCommand::Hooks
+             | SlashCommand::Title
+diff --git a/codex-rs/tui/src/chatwidget/tests.rs b/codex-rs/tui/src/chatwidget/tests.rs
+index 1eb26d5..ac7110a 100644
+--- a/codex-rs/tui/src/chatwidget/tests.rs
++++ b/codex-rs/tui/src/chatwidget/tests.rs
+@@ -260,6 +260,7 @@ mod popups_and_settings;
+ mod rate_limit_recovery_tests;
+ mod review_mode;
+ mod side;
++mod skilltree_native;
+ mod slash_commands;
+ mod status_and_layout;
+ mod status_command_tests;
+diff --git a/codex-rs/tui/src/lib.rs b/codex-rs/tui/src/lib.rs
+index 36852ab..9cc6b4f 100644
+--- a/codex-rs/tui/src/lib.rs
++++ b/codex-rs/tui/src/lib.rs
+@@ -180,6 +180,8 @@ mod session_resume;
+ mod session_start;
+ mod session_state;
+ mod skills_helpers;
++mod skilltree;
++mod skilltree_view;
+ mod slash_command;
+ mod startup_draft;
+ mod startup_error;
+diff --git a/codex-rs/tui/src/slash_command.rs b/codex-rs/tui/src/slash_command.rs
+index aab133f..745aba4 100644
+--- a/codex-rs/tui/src/slash_command.rs
++++ b/codex-rs/tui/src/slash_command.rs
+@@ -26,6 +26,7 @@ pub enum SlashCommand {
+     AutoReview,
+     Memories,
+     Skills,
++    Skilltree,
+     Import,
+     Hooks,
+     Review,
+@@ -106,6 +107,7 @@ impl SlashCommand {
+             SlashCommand::Raw => "toggle raw scrollback mode for copy-friendly terminal selection",
+             SlashCommand::Diff => "show git diff (including untracked files)",
+             SlashCommand::Mention => "mention a file",
++            SlashCommand::Skilltree => "browse, classify, and load skill trees",
+             SlashCommand::Skills => "use skills to improve how Codex performs specific tasks",
+             SlashCommand::Import => "import setup, this project, and recent chats from Claude Code",
+             SlashCommand::Hooks => "view and manage lifecycle hooks",
+@@ -163,7 +165,8 @@ impl SlashCommand {
+     pub fn supports_inline_args(self) -> bool {
+         matches!(
+             self,
+-            SlashCommand::Review
++            SlashCommand::Skilltree
++                | SlashCommand::Review
+                 | SlashCommand::Rename
+                 | SlashCommand::New
+                 | SlashCommand::Clear
+@@ -206,7 +209,8 @@ impl SlashCommand {
+     /// Whether this command can be run while a task is in progress.
+     pub fn available_during_task(self) -> bool {
+         match self {
+-            SlashCommand::New
++            SlashCommand::Skilltree
++            | SlashCommand::New
+             | SlashCommand::Archive
+             | SlashCommand::Delete
+             | SlashCommand::Fork

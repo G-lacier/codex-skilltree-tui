@@ -1,0 +1,30 @@
+---
+source: src/behavior_tests.rs
+expression: "screen(&editor, 104)"
+---
+ Skill trees ───────────────────────────────────────────────────────────────────────────────────────────
+debug a bug
+1 selected · 2 with prerequisites · ~297/6000 tokens   t task · r suggest · b budget
+┌Classes──────────────────────┐┌Trees────────────────────────┐┌Skills──────────────────────────────────┐
+│Software Development         ││Bug diagnosis                ││[+] trace-bug                           │
+│Debugging and Inspection     ││                             ││                                        │
+│Unassigned                   ││                             ││                                        │
+│                             ││                             ││                                        │
+│                             ││                             ││                                        │
+│                             ││                             ││                                        │
+│                             ││                             ││                                        │
+│                             ││                             ││                                        │
+│                             ││                             ││                                        │
+│                             ││                             ││                                        │
+│                             ││                             ││                                        │
+│                             ││                             ││                                        │
+│                             ││                             ││                                        │
+└─────────────────────────────┘└─────────────────────────────┘└────────────────────────────────────────┘
+Debugging and Inspection / Bug diagnosis
+bundled/trace-bug · Investigate bugs and failures.
+Tags: debug, bug | Requires: bundled/project-map
+1 suggested skills selected. Space changes the selection; Ctrl+L loads it.
+
+
+Tab/←→ pane · ↑↓ browse · Space select · Ctrl+L load into chat · / search
+n new · e edit · i instructions · a assign · x clear · s source · F5 refresh · Esc close

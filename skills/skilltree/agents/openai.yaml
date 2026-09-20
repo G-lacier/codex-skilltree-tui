@@ -1,0 +1,4 @@
+interface:
+  display_name: "Skill Trees"
+  short_description: "Choose task-relevant skills from practical classes and trees"
+  default_prompt: "Use $skilltree to select and load the skills needed for this task."

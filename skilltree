@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+set -euo pipefail
+skilltree_root="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
+export CODEX_SKILLTREE_ROOT="${CODEX_SKILLTREE_ROOT:-$skilltree_root}"
+skilltree_binary="${SKILLTREE_BIN_DIR:-$skilltree_root/.skilltree/bin}/skilltree"
+if [[ ! -x "$skilltree_binary" ]]; then
+    printf '%s\n' 'Build the native executables first: ./scripts/build-native.sh /path/to/codex' >&2
+    exit 1
+fi
+exec "$skilltree_binary" "$@"
